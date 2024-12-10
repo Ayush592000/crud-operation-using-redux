@@ -13,24 +13,38 @@ const ReadData = () => {
   const { user, loading } = useSelector(state => state.app)
   console.log("user", user)
 
+  useEffect(() => {
+    if (user) {
+      setData(user)
+    }
+  }, [user])
+
   if (loading) {
     return (<h1 className='d-flex mt-5 justify-content-center align-items-center'>Loading...</h1>)
   }
+
+  console.log("getData", getData)
   return (
     <>
       <NavBar />
       <h1 className='d-flex justify-content-center align-items-center'>Get All Data</h1>
-      <div className='d-flex justify-content-center align-items-center'>
-        <div className="card w-50  my-3" style={{ "width": "18rem" }}>
-          <div className="card-body">
-            <h5 className="card-title">Card title</h5>
-            <h6 className="card-subtitle mb-2 text-muted">Card subtitle</h6>
-            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            <Link to={'/userDetail'} className="card-link">Go to home</Link>
-            {/* <Link  className="card-link">Another link</Link> */}
+      {
+        getData && getData.map((item, id) => (
+
+
+          <div className='d-flex justify-content-center align-items-center' key={id}>
+            <div className="card w-50  my-3" style={{ "width": "18rem" }}>
+              <div className="card-body">
+                <h5 className="card-title">User Name : {item.name}</h5>
+                <h6 className="card-text mb-2 ">User Age : {item.age}</h6>
+                <h6 className="card-subtitle text-muted">Email : {item.email}</h6>
+                <h6 className="card-text">Gender : {item.gender}</h6>
+                <Link to={'/userDetail'} className="card-link text-decoration-none">Add More</Link>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        ))
+      }
     </>
   )
 }
