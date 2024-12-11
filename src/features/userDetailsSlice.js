@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 //fetch data
-export const readData = createAsyncThunk('readData', async () => {
+export const readData = createAsyncThunk('readData', async ({ rejectWithValue }) => {
   const response = await fetch('https://66bc39ba24da2de7ff69abcf.mockapi.io/crudOperation')
   try {
     const result = await response.json();
@@ -29,7 +29,22 @@ export const createUser = createAsyncThunk('createUser', async (data, { rejectWi
     return rejectWithValue(error)
   }
 })
+//delete user
+export const delteUser = createAsyncThunk('readData', async (id, { rejectWithValue }) => {
+  const response = await fetch(`https://66bc39ba24da2de7ff69abcf.mockapi.io/crudOperation/${id}`, {
+    method: 'DELETE',
+    headers: {
+      "Content-Type": "application/json"
+    }
+  })
+  try {
+    const result = await response.json();
+    return result;
 
+  } catch (error) {
+    return rejectWithValue(error)
+  }
+})
 export const userDetails = createSlice({
   name: 'userDetail',
   initialState: {
@@ -60,6 +75,19 @@ export const userDetails = createSlice({
         state.user = action.payload;
       })
       .addCase(readData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error;
+      })
+      .addCase(delteUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(delteUser.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log(action.payload)
+        const { id } = action.payload;
+      })
+      .addCase(delteUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       })
