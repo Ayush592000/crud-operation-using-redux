@@ -1,8 +1,10 @@
 import React from 'react'
-import UserFrom from './UserFrom'
 import { Link } from 'react-router-dom'
+import UserFrom from './UserFrom'
+import { useSelector } from 'react-redux'
 
 const NavBar = () => {
+  const allUser = useSelector(state => state.app.user)
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
@@ -16,7 +18,7 @@ const NavBar = () => {
               <Link className="nav-link fw-bold" to='/userDetail'>Create</Link>
             </li>
             <li className="nav-item">
-              <Link className="nav-link fw-bold" to='/readData'>Read</Link>
+              <Link className="nav-link fw-bold" to='/readData'>All Data  ({allUser.length})</Link>
             </li>
           </ul>
           <form className="d-flex">

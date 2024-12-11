@@ -33,7 +33,7 @@ const ReadData = () => {
 
 
           <div className='d-flex justify-content-center align-items-center' key={id}>
-            <div className="card w-50  my-3" style={{ "width": "18rem" }}>
+            <div className="card w-50  mx-auto" >
               <div className="card-body">
                 <h5 className="card-title">User Name : {item.name}</h5>
                 <h6 className="card-text mb-2 ">User Age : {item.age}</h6>
