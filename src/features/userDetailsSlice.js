@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 //fetch data
-export const readData = createAsyncThunk('readData', async ({ rejectWithValue }) => {
-  const response = await fetch('https://66bc39ba24da2de7ff69abcf.mockapi.io/crudOperation')
+export const readData = createAsyncThunk('readData', async (args, { rejectWithValue }) => {
+  const response = await fetch('https://66bc39ba24da2de7ff69abcf.mockapi.io/crud-operation')
   try {
     const result = await response.json();
     return result;
@@ -14,7 +14,7 @@ export const readData = createAsyncThunk('readData', async ({ rejectWithValue })
 })
 //post data
 export const createUser = createAsyncThunk('createUser', async (data, { rejectWithValue }) => {
-  const response = await fetch('https://66bc39ba24da2de7ff69abcf.mockapi.io/crudOperation', {
+  const response = await fetch('https://66bc39ba24da2de7ff69abcf.mockapi.io/crud-operation', {
     method: 'POST',
     headers: {
       "Content-Type": "application/json"
@@ -30,8 +30,8 @@ export const createUser = createAsyncThunk('createUser', async (data, { rejectWi
   }
 })
 //delete user
-export const delteUser = createAsyncThunk('readData', async (id, { rejectWithValue }) => {
-  const response = await fetch(`https://66bc39ba24da2de7ff69abcf.mockapi.io/crudOperation/${id}`, {
+export const deleteUser = createAsyncThunk('deleteUser', async (id, { rejectWithValue }) => {
+  const response = await fetch(`https://66bc39ba24da2de7ff69abcf.mockapi.io/crud-operation/${id}`, {
     method: 'DELETE',
     headers: {
       "Content-Type": "application/json"
@@ -45,6 +45,9 @@ export const delteUser = createAsyncThunk('readData', async (id, { rejectWithVal
     return rejectWithValue(error)
   }
 })
+
+
+//slice
 export const userDetails = createSlice({
   name: 'userDetail',
   initialState: {
@@ -78,16 +81,20 @@ export const userDetails = createSlice({
         state.loading = false;
         state.error = action.error;
       })
-      .addCase(delteUser.pending, (state) => {
+      
+      .addCase(deleteUser.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
-      .addCase(delteUser.fulfilled, (state, action) => {
+      .addCase(deleteUser.fulfilled, (state, action) => {
         state.loading = false;
         console.log(action.payload)
         const { id } = action.payload;
+        if (id) {
+          state.user = state.user.filter((ele) => ele.id !== id);
+        }
       })
-      .addCase(delteUser.rejected, (state, action) => {
+      .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
       })

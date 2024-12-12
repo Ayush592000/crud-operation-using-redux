@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import NavBar from './NavBar'
 import { useDispatch, useSelector } from 'react-redux';
-import { readData } from '../features/userDetailsSlice';
+import { deleteUser, readData } from '../features/userDetailsSlice';
 import { Link } from 'react-router-dom';
 import Model from './Model';
 
@@ -46,9 +46,9 @@ const ReadData = () => {
                 <h6 className="card-text mb-2 ">User Age : {item.age}</h6>
                 <h6 className="card-subtitle text-muted">Email : {item.email}</h6>
                 <h6 className="card-text">Gender : {item.gender}</h6>
-                <button className="card-link text-decoration-none" onClick={() => [setId(item.id), setModel(true)]}>view</button>
-                <Link to={'/userDetail'} className="card-link text-decoration-none">Add More</Link>
-                <Link className="card-link text-decoration-none" onClick={() => dispatch(deleteUser(ele.id))}>Delete</Link>
+                <button className="card-link text-decoration-none btn-primary" onClick={() => [setId(item.id), setModel(true)]}>view</button>
+                <button to={'/userDetail'} className="card-link text-decoration-none btn-outline-primary">Add More</button>
+                <button className="card-link text-decoration-none btn-outline-danger" onClick={() => dispatch(deleteUser(item.id))}>{item.id} Delete</button>
               </div>
             </div>
           </div>
