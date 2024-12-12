@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import NavBar from "./NavBar";
 import "./style.css";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { editData } from "../features/userDetailsSlice";
 
 const EditForm = () => {
   const { id } = useParams();
@@ -12,6 +13,8 @@ const EditForm = () => {
     email: "",
     gender: "",
   });
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
   const { user } = useSelector((state) => state.app);
 
   useEffect(() => {
@@ -30,8 +33,9 @@ const EditForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Updated User Data: ", singleUser);
-    // Perform dispatch action or API call here
+    dispatch(editData(singleUser));
+    navigate('/readData')
+
   };
 
   return (

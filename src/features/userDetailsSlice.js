@@ -46,6 +46,23 @@ export const deleteUser = createAsyncThunk('deleteUser', async (id, { rejectWith
   }
 })
 
+//edit data
+export const editData = createAsyncThunk('editData', async (data, { rejectWithValue }) => {
+  const response = await fetch(`https://66bc39ba24da2de7ff69abcf.mockapi.io/crud-operation/${data.id}`, {
+    method: 'PUT',
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  try {
+    const result = await response.json();
+    return result;
+
+  } catch (error) {
+    return rejectWithValue(error)
+  }
+})
 
 //slice
 export const userDetails = createSlice({
@@ -57,6 +74,7 @@ export const userDetails = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      //create data
       .addCase(createUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -69,6 +87,8 @@ export const userDetails = createSlice({
         state.loading = false;
         state.error = action.error.message;
       })
+
+      //fetch data
       .addCase(readData.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -81,7 +101,8 @@ export const userDetails = createSlice({
         state.loading = false;
         state.error = action.error;
       })
-      
+
+      //delete data
       .addCase(deleteUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -97,6 +118,22 @@ export const userDetails = createSlice({
       .addCase(deleteUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error;
+      })
+
+      //edit data
+      .addCase(editData.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(editData.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = state.user.map((ele) =>
+          ele.id === action.payload.id ? action.payload : ele
+        );
+      })
+      .addCase(editData.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       })
   }
 })
