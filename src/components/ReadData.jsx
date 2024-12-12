@@ -14,7 +14,7 @@ const ReadData = () => {
     dispatch(readData())
   }, [])
   const { user, loading } = useSelector(state => state.app)
-  console.log("user", user)
+  // console.log("user", user)
 
   useEffect(() => {
     if (user) {
@@ -26,7 +26,7 @@ const ReadData = () => {
     return (<h1 className='d-flex mt-5 justify-content-center align-items-center'>Loading...</h1>)
   }
 
-  console.log("getData", getData)
+  // console.log("getData", getData)
   return (
     <>
       {model && <Model
@@ -49,6 +49,7 @@ const ReadData = () => {
                 <button className="card-link text-decoration-none btn-primary" onClick={() => [setId(item.id), setModel(true)]}>view</button>
                 <button to={'/userDetail'} className="card-link text-decoration-none btn-outline-primary">Add More</button>
                 <button className="card-link text-decoration-none btn-outline-danger" onClick={() => dispatch(deleteUser(item.id))}>{item.id} Delete</button>
+                <Link to={`/edit/${item.id}`} className="card-link text-decoration-none ">Edit</Link>
               </div>
             </div>
           </div>
